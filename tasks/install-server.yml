@@ -15,7 +15,7 @@
 
 - name: "Get the Minio server checksum for {{ go_arch }} architecture"
   set_fact:
-    _minio_server_checksum: "{{ lookup('url', _minio_server_download_url + '.sha256sum').split(' ')[0] }}"
+    _minio_server_checksum: "{{ lookup('url', _minio_server_download_url + '.sha256sum', validate_certs=minio_validate_certs).split(' ')[0] }}"
 
 - name: Create Minio group
   group:
