@@ -40,3 +40,6 @@ minio_secret_key: ""
 minio_install_server: true
 minio_install_client: true
 minio_validate_certs: true
+
+# 
+minio_checksum_remote: false

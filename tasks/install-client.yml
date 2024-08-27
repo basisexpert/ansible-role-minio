@@ -15,8 +15,14 @@
   when: minio_client_release | length > 0
 
 - name: "Get the Minio client checksum for {{ go_arch }} architecture"
+  when: not (minio_checksum_remote | d(false) | bool)
   set_fact:
     _minio_client_checksum: "{{ lookup('url', _minio_client_download_url + '.sha256sum', validate_certs=minio_validate_certs).split(' ')[0] }}"
+
+- name: "Compose the Minio client checksum url for {{ go_arch }} architecture"
+  when: minio_checksum_remote | d(false) | bool
+  set_fact:
+    _minio_client_checksum: "{{ _minio_client_download_url }}.sha256sum"
 
 - name: Download the Minio client
   get_url:

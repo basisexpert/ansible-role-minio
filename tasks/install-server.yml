@@ -14,8 +14,14 @@
   when: minio_server_release | length > 0
 
 - name: "Get the Minio server checksum for {{ go_arch }} architecture"
+  when: not (minio_checksum_remote | d(false) | bool)
   set_fact:
     _minio_server_checksum: "{{ lookup('url', _minio_server_download_url + '.sha256sum', validate_certs=minio_validate_certs).split(' ')[0] }}"
+
+- name: "Compose the Minio server checksum url for {{ go_arch }} architecture"
+  when: minio_checksum_remote | d(false) | bool
+  set_fact:
+    _minio_server_checksum: "{{ _minio_server_download_url }}.sha256sum"
 
 - name: Create Minio group
   group:
